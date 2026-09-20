@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontrol LED ThingSpeak</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Kontrol LED NodeMCU ESP8266</h1>
+
+    <h2>LED 1 - D4</h2>
+    <button class="button" onclick="kontrolLED(1, 1)">LED 1 ON</button>
+    <button class="button" onclick="kontrolLED(1, 0)">LED 1 OFF</button>
+
+    <h2>LED 2 - D5</h2>
+    <button class="button" onclick="kontrolLED(2, 1)">LED 2 ON</button>
+    <button class="button" onclick="kontrolLED(2, 0)">LED 2 OFF</button>
+
+    <p id="status">Status: Siap</p>
+
+    
+    <script>
+        const writeAPIKey = "HPMBXIOXNH6WVW47";
+
+        function kontrolLED(field, value) {
+
+            const url =
+                "https://api.thingspeak.com/update?api_key=" +
+                writeAPIKey +
+                "&field" + field + "=" + value;
+
+            document.getElementById("status").innerHTML =
+                "Mengirim perintah...";
+
+            fetch(url, {
+                method: "GET",
+                mode: "no-cors"
+            })
+            .then(() => {
+                document.getElementById("status").innerHTML =
+                    "Perintah telah dikirim ke ThingSpeak";
+            })
+            .catch(error => {
+                document.getElementById("status").innerHTML =
+                    "Gagal mengirim perintah";
+                console.error(error);
+            });
+        }
+</script>
+
+</body>
+</html>
